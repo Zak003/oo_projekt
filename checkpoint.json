@@ -1,0 +1,55 @@
+{
+  "Prazgodovina": {
+    "leto": "40000-3000 pr.n.st.",
+    "naslov": "Prazgodovina",
+    "paleta": [
+      "#92918D",
+      "#71726C",
+      "#796149",
+      "#4C4D4B",
+      "#9C8260",
+      "#BFBFB9"
+    ],
+    "imena": [
+      "Siva",
+      "Siva",
+      "Umbra",
+      "Temno siva",
+      "Konjak",
+      "Svetlo siva"
+    ],
+    "opis": "Jamske poslikave in okrasti pigmenti. Umetniki so za pigmente uporabljali minerale, oglje in zivalske mascobe za belezenje zivljenja, lovskih ritualov in duhovnih simbolov.",
+    "dela": [
+      {
+        "title": "Lascaux: Jamske poslikave",
+        "artist": "Neznan umetnik, ~17000 pr.n.st.",
+        "img": "https://upload.wikimedia.org/wikipedia/commons/1/1e/Lascaux_painting.jpg"
+      },
+      {
+        "title": "Altamira: Bizon",
+        "artist": "Neznan umetnik, ~14000 pr.n.st.",
+        "img": "https://upload.wikimedia.org/wikipedia/commons/8/8b/9_Bisonte_Magdaleniense_pol%C3%ADcromo.jpg"
+      },
+      {
+        "title": "Chauvet: Konji",
+        "artist": "Neznan umetnik, ~32000 pr.n.st.",
+        "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Chauvet_Cave_Paintings_Horses.jpg/1280px-Chauvet_Cave_Paintings_Horses.jpg"
+      },
+      {
+        "title": "Cueva de las Manos: Roke",
+        "artist": "Neznan umetnik, ~9000 pr.n.st.",
+        "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/SantaCruz-CuevaManos-P2210651b.jpg/1280px-SantaCruz-CuevaManos-P2210651b.jpg"
+      },
+      {
+        "title": "Willendorfska Venera",
+        "artist": "Neznan umetnik, ~28000 pr.n.st.",
+        "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Venus_von_Willendorf_01.jpg/320px-Venus_von_Willendorf_01.jpg"
+      },
+      {
+        "title": "Bhimbetka: Skalne poslikave",
+        "artist": "Neznan umetnik, ~10000 pr.n.st.",
+        "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Bhimbetka_Cave_3.jpg/1280px-Bhimbetka_Cave_3.jpg"
+      }
+    ]
+  }
+}

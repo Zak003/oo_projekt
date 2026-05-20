@@ -6,283 +6,767 @@
 <title>Spremembe barvnih palet skozi čas</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Georgia', serif; background: #f5f3ee; color: #1a1a1a; min-height: 100vh; }
-.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
-.header { background: #fff; border-bottom: 0.5px solid rgba(0,0,0,0.12); padding: 16px 28px; }
-.breadcrumb { font-size: 11px; color: #888; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 4px; }
-.page-title { font-size: 19px; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; }
-.main { padding: 24px 28px 32px; }
-.timeline-card { background: #fff; border: 0.5px solid rgba(0,0,0,0.1); border-radius: 12px; padding: 20px 28px 16px; margin-bottom: 24px; }
-.era-labels { display: flex; justify-content: space-between; margin-bottom: 6px; }
-.era-label { text-align: center; cursor: pointer; transition: opacity 0.18s; }
-.era-label .year { font-size: 11px; font-weight: 600; color: #1a1a1a; white-space: nowrap; }
-.era-label .name { font-size: 10px; color: #888; white-space: nowrap; }
-.timeline-bar { position: relative; height: 32px; cursor: pointer; margin-bottom: 12px; user-select: none; }
-.tl-line { position: absolute; top: 50%; left: 0; right: 8px; height: 2px; background: #1a1a1a; transform: translateY(-50%); }
-.tl-arrow { position: absolute; top: 50%; right: 0; transform: translateY(-50%); width: 0; height: 0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 9px solid #1a1a1a; }
-.tl-tick { position: absolute; top: 50%; transform: translateY(-50%); width: 2px; background: #1a1a1a; border-radius: 1px; }
-.tl-handle { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 20px; height: 20px; border-radius: 50%; background: #fff; border: 2px solid #1a1a1a; box-shadow: 0 1px 5px rgba(0,0,0,0.2); z-index: 3; }
-.palette-row { display: flex; justify-content: space-between; }
-.mini-palette { display: flex; cursor: pointer; border-radius: 4px; overflow: hidden; }
-.mini-swatch { width: 10px; height: 20px; }
-.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
-.section-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #888; margin-bottom: 10px; }
-.era-panel { background: #fff; border: 0.5px solid rgba(0,0,0,0.1); border-radius: 12px; padding: 18px; }
-.palette-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
-.swatch-item { display: flex; align-items: center; gap: 10px; }
-.swatch-box { width: 52px; height: 52px; border-radius: 8px; border: 0.5px solid rgba(0,0,0,0.1); flex-shrink: 0; }
-.swatch-name { font-size: 12px; font-weight: 500; color: #1a1a1a; }
-.swatch-hex { font-size: 10px; color: #888; font-family: monospace; }
-.era-desc { font-size: 12px; color: #666; line-height: 1.65; border-top: 0.5px solid rgba(0,0,0,0.08); padding-top: 12px; }
-.palette-strip { display: flex; border-radius: 5px; overflow: hidden; height: 10px; margin-top: 12px; }
-.artworks-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
-.artwork-card { background: #fff; border: 0.5px solid rgba(0,0,0,0.1); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; min-width: 0; }
-.artwork-img-wrap { width: 100%; aspect-ratio: 4 / 3; overflow: hidden; background: #f0eee8; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
-.artwork-img { width: 100%; height: 100%; object-fit: contain; object-position: center; display: block; padding: 6px; background: #f0eee8; }
-.artwork-img-placeholder { display: none; width: 100%; height: 100%; align-items: center; justify-content: center; padding: 12px; background: #f0eee8; color: #777; font-size: 10px; line-height: 1.35; text-align: center; }
-.artwork-card.no-image .artwork-img { display: none; }
-.artwork-card.no-image .artwork-img-placeholder { display: flex; }
-.artwork-info { padding: 7px 9px 9px; }
-.artwork-title { font-size: 10px; font-weight: 500; line-height: 1.3; margin-bottom: 3px; color: #1a1a1a; }
-.artwork-artist { font-size: 9px; color: #999; margin-bottom: 6px; font-style: italic; }
-.color-bar { display: flex; height: 9px; border-radius: 3px; overflow: hidden; }
-.color-bar-seg { flex: 1; }
-.status-banner { background: #fffbe6; border: 1px solid #f0d060; border-radius: 8px; padding: 10px 14px; margin-bottom: 16px; font-size: 12px; color: #7a6010; display: none; }
-.status-banner.show { display: block; }
-@media (max-width: 980px) {
-  .grid2 { grid-template-columns: 1fr; }
+
+body {
+  font-family: 'Georgia', serif;
+  background: #f5f3ee;
+  color: #1a1a1a;
+  min-height: 100vh;
 }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+}
+
+.header {
+  background: #fff;
+  border-bottom: 0.5px solid rgba(0,0,0,0.12);
+  padding: 16px 28px;
+}
+
+.breadcrumb {
+  font-size: 11px;
+  color: #888;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.page-title {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.main {
+  padding: 24px 28px 32px;
+}
+
+.timeline-card {
+  background: #fff;
+  border: 0.5px solid rgba(0,0,0,0.1);
+  border-radius: 12px;
+  padding: 20px 28px 16px;
+  margin-bottom: 24px;
+}
+
+/* POPRAVLJENO:
+   Letnice/oznake so zdaj absolutno pozicionirane na isti matematični položaj
+   kot ticki, handle in mini palete. */
+.era-labels {
+  position: relative;
+  height: 34px;
+  margin-bottom: 6px;
+}
+
+.era-label {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  text-align: center;
+  cursor: pointer;
+  transition: opacity 0.18s;
+}
+
+.era-label .year {
+  font-size: 11px;
+  font-weight: 600;
+  color: #1a1a1a;
+  white-space: nowrap;
+}
+
+.era-label .name {
+  font-size: 10px;
+  color: #888;
+  white-space: nowrap;
+}
+
+.timeline-bar {
+  position: relative;
+  height: 32px;
+  cursor: pointer;
+  margin-bottom: 12px;
+  user-select: none;
+}
+
+.tl-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 8px;
+  height: 2px;
+  background: #1a1a1a;
+  transform: translateY(-50%);
+}
+
+.tl-arrow {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 9px solid #1a1a1a;
+}
+
+.tl-tick {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2px;
+  background: #1a1a1a;
+  border-radius: 1px;
+}
+
+.tl-handle {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #1a1a1a;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+  z-index: 3;
+}
+
+/* POPRAVLJENO:
+   Mini palete so zdaj centrirane pod isto oznako obdobja kot letnice in ticki. */
+.palette-row {
+  position: relative;
+  height: 24px;
+}
+
+.mini-palette {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  display: flex;
+  cursor: pointer;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.mini-swatch {
+  width: 10px;
+  height: 20px;
+}
+
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  align-items: start;
+}
+
+.section-label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+.section-label--details {
+  margin-top: 18px;
+}
+
+.era-panel {
+  background: #fff;
+  border: 0.5px solid rgba(0,0,0,0.1);
+  border-radius: 12px;
+  padding: 18px;
+}
+
+.palette-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.swatch-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.swatch-box {
+  width: 52px;
+  height: 52px;
+  border-radius: 8px;
+  border: 0.5px solid rgba(0,0,0,0.1);
+  flex-shrink: 0;
+}
+
+.swatch-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: #1a1a1a;
+}
+
+.swatch-hex {
+  font-size: 10px;
+  color: #999;
+  font-family: monospace;
+  margin-top: 2px;
+}
+
+.era-desc {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.65;
+  border-top: 0.5px solid rgba(0,0,0,0.08);
+  padding-top: 12px;
+}
+
+.palette-strip {
+  display: flex;
+  border-radius: 5px;
+  overflow: hidden;
+  height: 10px;
+  margin-top: 12px;
+}
+
+.details-card {
+  margin-top: 12px;
+}
+
+.detail-desc {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.7;
+}
+
+.detail-block {
+  margin-top: 12px;
+}
+
+.detail-subtitle {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #888;
+  margin-bottom: 6px;
+}
+
+.detail-list,
+.detail-notes {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 6px 14px;
+  font-size: 11px;
+  color: #333;
+}
+
+.detail-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.detail-notes {
+  grid-template-columns: 1fr;
+  color: #666;
+}
+
+.detail-list li::before,
+.detail-notes li::before {
+  content: "• ";
+  color: #999;
+}
+
+.artworks-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.artwork-card {
+  background: #fff;
+  border: 0.5px solid rgba(0,0,0,0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.artwork-img-wrap {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #f0eee8;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.artwork-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  padding: 6px;
+  background: #f0eee8;
+}
+
+.artwork-img-placeholder {
+  display: none;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  background: #f0eee8;
+  color: #777;
+  font-size: 10px;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.artwork-card.no-image .artwork-img {
+  display: none;
+}
+
+.artwork-card.no-image .artwork-img-placeholder {
+  display: flex;
+}
+
+.artwork-info {
+  padding: 7px 9px 9px;
+}
+
+.artwork-title {
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.3;
+  margin-bottom: 3px;
+  color: #1a1a1a;
+}
+
+.artwork-artist {
+  font-size: 9px;
+  color: #999;
+  margin-bottom: 6px;
+  font-style: italic;
+}
+
+.color-bar {
+  display: flex;
+  height: 9px;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.color-bar-seg {
+  flex: 1;
+}
+
+.status-banner {
+  background: #fffbe6;
+  border: 1px solid #f0d060;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  font-size: 12px;
+  color: #7a6010;
+  display: none;
+}
+
+.status-banner.show {
+  display: block;
+}
+
+.artwork-gallery {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.artwork-gallery .artwork-img-wrap {
+  min-width: 100%;
+}
+
+@media (max-width: 980px) {
+  .grid2 {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 640px) {
-  .header { padding: 14px 16px; }
-  .main { padding: 18px 16px 28px; }
-  .timeline-card { padding: 16px; overflow-x: auto; }
-  .era-labels, .palette-row { min-width: 620px; }
-  .artworks-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .header {
+    padding: 14px 16px;
+  }
+
+  .main {
+    padding: 18px 16px 28px;
+  }
+
+  .timeline-card {
+    padding: 16px;
+    overflow-x: auto;
+  }
+
+  /* POPRAVLJENO:
+     Vsi trije deli časovnice imajo enako minimalno širino,
+     zato pri mobilnem horizontalnem scrollu ne pride do zamika. */
+  .era-labels,
+  .timeline-bar,
+  .palette-row {
+    min-width: 620px;
+  }
+
+  .artworks-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .detail-list {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
 </head>
+
 <body>
 <h2 class="sr-only">Interaktivni pregled barvnih palet umetnostnih dob skozi čas</h2>
+
 <div class="header">
   <div class="breadcrumb" id="breadcrumb">Domov › Raziskuj › Impresionizem</div>
   <div class="page-title">Projekt: Spremembe barvnih palet skozi čas</div>
 </div>
+
 <div class="main">
   <div id="statusBanner" class="status-banner">
     &#9888;&#65039; <strong>Pozor:</strong> Datoteka <code>art_periods_data.json</code> ni bila najdena ali stran ni odprta s strežnika.
-    Prikazujem privzete podatke. Zaženite <code>python extract_colors.py</code> in odprite stran z
+    Prikazujem privzete podatke. Algoritem zdaj bere lokalne slike iz mape <code>images</code>. Zaženite <code>python extract_colors.py</code> in odprite stran z
     <code>python -m http.server 8080</code> za prikaz pravih barv.
   </div>
+
   <div class="timeline-card">
     <div class="era-labels" id="eraLabels"></div>
+
     <div class="timeline-bar" id="timelineBar">
       <div class="tl-line"></div>
       <div class="tl-arrow"></div>
       <div id="ticks"></div>
       <div class="tl-handle" id="handle"></div>
     </div>
+
     <div class="palette-row" id="paletteRow"></div>
   </div>
+
   <div class="grid2">
     <div>
       <div class="section-label" id="eraTitle"></div>
+
       <div class="era-panel">
         <div class="palette-grid" id="paletteGrid"></div>
         <div class="era-desc" id="eraDesc"></div>
         <div class="palette-strip" id="paletteStrip"></div>
       </div>
+
+      <div class="section-label section-label--details">O obdobju</div>
+
+      <div class="era-panel details-card">
+        <div class="detail-desc" id="detailDesc"></div>
+
+        <div class="detail-block" id="detailArtistsBlock">
+          <div class="detail-subtitle">Predstavniki</div>
+          <ul class="detail-list" id="detailArtists"></ul>
+        </div>
+
+        <div class="detail-block" id="detailNotesBlock">
+          <div class="detail-subtitle">Zgodovinski poudarki</div>
+          <ul class="detail-notes" id="detailNotes"></ul>
+        </div>
+      </div>
     </div>
+
     <div>
       <div class="section-label">Primeri del in uporaba</div>
       <div class="artworks-grid" id="artworksGrid"></div>
     </div>
   </div>
 </div>
+
 <script>
 const PRIVZETE_DOBE = [
   {
-    leto:"40000\u20133000 pr.n.\u0161t.", naslov:"Prazgodovina",
+    leto:"40000–3000 pr. n. št.",
+    naslov:"Prazgodovina",
     paleta:["#C4A882","#8B5E3C","#6B4226","#3D2B1F","#A0785A","#D4B896"],
-    imena:["Okrasta be\u017e","Rjava zemlja","Temna rjava","Saje","Pe\u0161\u010dena","Kremna"],
-    opis:"Jamske poslikave in okrasti pigmenti. Umetniki so za pigmente uporabljali minerale, oglje in \u017eivalske ma\u0161\u010dobe za bele\u017eenje \u017eivljenja, lovskih ritualov in duhovnih simbolov.",
+    imena:["Okrasta bež","Rjava zemlja","Temna rjava","Saje","Peščena","Kremna"],
+    opis:"Jamske poslikave in okrasti pigmenti. Umetniki so za pigmente uporabljali minerale, oglje in živalske maščobe za beleženje življenja, lovskih ritualov in duhovnih simbolov.",
     dela:[
-      {title:"Lascaux: Jamske poslikave",artist:"Neznan umetnik, ~17000 pr.n.\u0161t.",img:"images/Lascaux_painting.jpg"},
-      {title:"Altamira: Bizon",artist:"Neznan umetnik, ~14000 pr.n.\u0161t.",img:"images/9_Bisonte_Magdaleniense_polícromo.jpg"},
-      {title:"Chauvet: Konji",artist:"Neznan umetnik, ~32000 pr.n.\u0161t.",img:"images/chauvet_konji_neznan_umetnik_32000_pr_n_st.jpg"},
-      {title:"Cueva de las Manos: Roke",artist:"Neznan umetnik, ~9000 pr.n.\u0161t.",img:"images/SantaCruz-CuevaManos-P2210651b.jpg"},
-      {title:"Willendorfska Venera",artist:"Neznan umetnik, ~28000 pr.n.\u0161t.",img:"images/Venus_von_Willendorf_01.jpg"},
-      {title:"Bhimbetka: Skalne poslikave",artist:"Neznan umetnik, ~10000 pr.n.\u0161t.",img:"images/bhimbetka_skalne_poslikave_neznan_umetnik_10000_pr_n_st.jpg"}
+      {title:"Lascaux: Jamske poslikave",artist:"Neznan umetnik, ~17000 pr. n. št.",img:"images/Lascaux_painting.jpg"},
+      {title:"Altamira: Bizon",artist:"Neznan umetnik, ~14000 pr. n. št.",img:"images/9_Bisonte_Magdaleniense_polícromo.jpg"},
+      {title:"Chauvet: Konji",artist:"Neznan umetnik, ~32000 pr. n. št.",img:"images/chauvet_konji_neznan_umetnik_32000_pr_n_st.jpg"},
+      {title:"Cueva de las Manos: Roke",artist:"Neznan umetnik, ~9000 pr. n. št.",img:"images/SantaCruz-CuevaManos-P2210651b.jpg"},
+      {title:"Willendorfska Venera",artist:"Neznan umetnik, ~28000 pr. n. št.",img:"images/Venus_von_Willendorf_01.jpg"},
+      {title:"Bhimbetka: Skalne poslikave",artist:"Neznan umetnik, ~10000 pr. n. št.",img:"images/bhimbetka_skalne_poslikave_neznan_umetnik_10000_pr_n_st.jpg"}
     ]
   },
   {
-    leto:"3100\u201330 pr.n.\u0161t.", naslov:"Stari Egipt",
+    leto:"3100–30 pr. n. št.",
+    naslov:"Stari Egipt",
     paleta:["#C8972A","#E5C96B","#F5E6B0","#3A6B8A","#8B1A1A","#2D5016"],
     imena:["Zlata","Svetlo zlata","Kremna","Lapislazuli","Cinober","Temno zelena"],
-    opis:"Ikoni\u010dni zlati toni, lapislazuli in okrasti odtenki. Barva je imela globok simbolni pomen \u2014 zlata za sonce in bogove, modra za Nil, zelena za plodnost in preporod.",
+    opis:"Ikonični zlati toni, lapislazuli in okrasti odtenki. Barva je imela globok simbolni pomen — zlata za sonce in bogove, modra za Nil, zelena za plodnost in preporod.",
     dela:[
-      {title:"Tutankamonova zlatna maska",artist:"Neznan umetnik, ~1323 pr.n.\u0161t.",img:"images/tutankamonova_zlatna_maska_neznan_umetnik_1323_pr_n_st.jpg"},
-      {title:"Nefertitina bista",artist:"Thutmose, ~1345 pr.n.\u0161t.",img:"images/Nefertiti_30-01-2006.jpg"},
-      {title:"Egipt\u010danska knjiga mrtvih",artist:"Neznan umetnik, ~1275 pr.n.\u0161t.",img:"images/BD_Weighing_of_the_Heart.jpg"},
-      {title:"Poslikave v grobnici Nebamun",artist:"Neznan umetnik, ~1350 pr.n.\u0161t.",img:"images/Maler_der_Grabkammer_des_Nebamun_001.jpg"},
+      {title:"Tutankamonova zlata maska",artist:"Neznan umetnik, ~1323 pr. n. št.",img:"images/tutankamonova_zlatna_maska_neznan_umetnik_1323_pr_n_st.jpg"},
+      {title:"Nefertitina bista",artist:"Thutmose, ~1345 pr. n. št.",img:"images/Nefertiti_30-01-2006.jpg"},
+      {title:"Egipčanska knjiga mrtvih",artist:"Neznan umetnik, ~1275 pr. n. št.",img:"images/BD_Weighing_of_the_Heart.jpg"},
+      {title:"Poslikave v grobnici Nebamun",artist:"Neznan umetnik, ~1350 pr. n. št.",img:"images/Maler_der_Grabkammer_des_Nebamun_001.jpg"},
       {title:"Amenhotep III",artist:"Neznan umetnik",img:"images/amenhotep_iii_neznan_umetnik.jpg"},
-      {title:"Sfinga v Gizi",artist:"Neznan umetnik, ~2500 pr.n.\u0161t.",img:"images/Great_Sphinx_of_Giza_-_20080716a.jpg"}
+      {title:"Sfinga v Gizi",artist:"Neznan umetnik, ~2500 pr. n. št.",img:"images/Great_Sphinx_of_Giza_-_20080716a.jpg"}
     ]
   },
   {
-    leto:"500\u20131500 n.\u0161t.", naslov:"Srednji vek",
+    leto:"500–1500 n. št.",
+    naslov:"Srednji vek",
     paleta:["#5A6E8C","#8B1A1A","#C4922A","#2D4A1E","#7A5C8A","#3A3A3A"],
-    imena:["Ultramarinska","Karmin","Rumena okra","Temno zelena","\u0160krlatna","Saje"],
-    opis:"Zlata ozadja, intenzivne gemske barve in simboli\u010dni odtenki. Barvna paleta je odra\u017eala versko hierarhijo \u2014 modra za Devico Marijo, \u0161krlatna za vladarje, zlata za bo\u017eansko.",
+    imena:["Ultramarinska","Karmin","Rumena okra","Temno zelena","Škrlatna","Saje"],
+    opis:"Zlata ozadja, intenzivne gemske barve in simbolični odtenki. Barvna paleta je odražala versko hierarhijo — modra za Devico Marijo, škrlatna za vladarje, zlata za božansko.",
     dela:[
-      {title:"Tr\u00e8s Riches Heures du Duc de Berry",artist:"Bratje Limbourg, 1412\u201316",img:"images/tres_riches_heures_du_duc_de_berry_bratje_limbourg_1412_16.jpg"},
+      {title:"Très Riches Heures du Duc de Berry",artist:"Bratje Limbourg, 1412–16",img:"images/tres_riches_heures_du_duc_de_berry_bratje_limbourg_1412_16.jpg"},
       {title:"Andrej Rubljev: Trojica",artist:"Andrej Rubljev, ~1411",img:"images/andrej_rubljev_trojica_andrej_rubljev_1411.jpg"},
       {title:"Knjiga iz Kellsa",artist:"Irski menihi, ~800",img:"images/KellsFol032vChristEnthroned.jpg"},
       {title:"Mozaik iz Ravenne: Justinijan I",artist:"Neznan mojster, ~547",img:"images/Meister_von_San_Vitale_in_Ravenna.jpg"},
-      {title:"Giotto: Lamentation (Piet\u00e0)",artist:"Giotto di Bondone, ~1305",img:"images/giotto_lamentation_pieta_giotto_di_bondone_1305.jpg"},
-      {title:"Tapiserija iz Bayeuxa",artist:"Neznan mojster, ~1070\u201380",img:"images/tapiserija_iz_bayeuxa_neznan_mojster_1070_80.jpg"}
+      {title:"Giotto: Lamentation (Pietà)",artist:"Giotto di Bondone, ~1305",img:"images/giotto_lamentation_pieta_giotto_di_bondone_1305.jpg"},
+      {title:"Tapiserija iz Bayeuxa",artist:"Neznan mojster, ~1070–80",img:"images/tapiserija_iz_bayeuxa_neznan_mojster_1070_80.jpg"}
     ]
   },
   {
-    leto:"1400\u20131600", naslov:"Renesansa",
+    leto:"1400–1600",
+    naslov:"Renesansa",
     paleta:["#4A7A5C","#8B6914","#C4922A","#6B3A5A","#2C4A6E","#8C6A4A"],
-    imena:["Emerald","Umbra","Okra","\u0160krlatna","Pru\u0161ka modra","Sienna"],
-    opis:"Bogati zemeljski toni in subtilni prehodi svetlobe. Renesancni mojstri so uvedli perspektivo in realizem z izpopolnjenim chiaroscurom ter novimi pigmenti.",
+    imena:["Emerald","Umbra","Okra","Škrlatna","Pruška modra","Sienna"],
+    opis:"Bogati zemeljski toni in subtilni prehodi svetlobe. Renesančni mojstri so uvedli perspektivo in realizem z izpopolnjenim chiaroscurom ter novimi pigmenti.",
     dela:[
-      {title:"Leonardo da Vinci: Mona Lisa",artist:"Leonardo da Vinci, 1503\u201319",img:"images/Mona_Lisa,_by_Leonardo_da_Vinci,_from_C2RMF_retouched.jpg"},
-      {title:"Botticelli: Rojstvo Venere",artist:"Sandro Botticelli, ~1484\u201386",img:"images/Sandro_Botticelli_-_La_nascita_di_Venere_-_Google_Art_Project_-_edited.jpg"},
-      {title:"Raphael: \u0160ola v Atenah",artist:"Raphael, 1509\u201311",img:"images/_The_School_of_Athens__by_Raffaello_Sanzio_da_Urbino.jpg"},
-      {title:"Michelangelo: Stvaritev Adama",artist:"Michelangelo, 1508\u201312",img:"images/Michelangelo_-_Creation_of_Adam_(cropped).jpg"},
+      {title:"Leonardo da Vinci: Mona Lisa",artist:"Leonardo da Vinci, 1503–19",img:"images/Mona_Lisa,_by_Leonardo_da_Vinci,_from_C2RMF_retouched.jpg"},
+      {title:"Botticelli: Rojstvo Venere",artist:"Sandro Botticelli, ~1484–86",img:"images/Sandro_Botticelli_-_La_nascita_di_Venere_-_Google_Art_Project_-_edited.jpg"},
+      {title:"Raphael: Šola v Atenah",artist:"Raphael, 1509–11",img:"images/_The_School_of_Athens__by_Raffaello_Sanzio_da_Urbino.jpg"},
+      {title:"Michelangelo: Stvaritev Adama",artist:"Michelangelo, 1508–12",img:"images/Michelangelo_-_Creation_of_Adam_(cropped).jpg"},
       {title:"Jan van Eyck: Arnolfinijeva poroka",artist:"Jan van Eyck, 1434",img:"images/Van_Eyck_-_Arnolfini_Portrait.jpg"},
-      {title:"Titian: Assumption of the Virgin",artist:"Titian, 1516\u201318",img:"images/titian_assumption_of_the_virgin_titian_1516_18.jpg"}
+      {title:"Titian: Assumption of the Virgin",artist:"Titian, 1516–18",img:"images/titian_assumption_of_the_virgin_titian_1516_18.jpg"}
     ]
   },
   {
-    leto:"1870\u20131900", naslov:"Impresionizem",
+    leto:"1870–1900",
+    naslov:"Impresionizem",
     paleta:["#89BDD3","#B8C4A8","#D4A843","#2E8B5A","#C85432","#8B7355"],
-    imena:["Svetlo modra","Sivka","Rumena okra","Kobaltno zelena","Rde\u010da vermilion","Sienna"],
-    opis:"Svetle, vibrantne barve nanesene z vidnimi potezami \u010dopi\u010da. Impresionisti so lovili trenutno igro svetlobe in atmosfero prizora, zavra\u010dajo\u010d akademski realizem.",
+    imena:["Svetlo modra","Sivka","Rumena okra","Kobaltno zelena","Rdeča vermilion","Sienna"],
+    opis:"Svetle, živahne barve nanesene z vidnimi potezami čopiča. Impresionisti so lovili trenutno igro svetlobe in atmosfero prizora, zavračajoč akademski realizem.",
     dela:[
       {title:"Monet: Impression, Soleil Levant",artist:"Claude Monet, 1872",img:"images/Monet_-_Impression,_Sunrise.jpg"},
       {title:"Renoir: Bal du Moulin de la Galette",artist:"Pierre-Auguste Renoir, 1876",img:"images/Renoir,_Pierre-Auguste_-_Dance_at_Le_Moulin_de_la_Galette,_1876.jpg"},
-      {title:"Degas: Plesalke v roza",artist:"Edgar Degas, ~1867\u201368",img:"images/Edgar_Degas,_1867c_-_Ballerinas_in_Pink.jpg"},
+      {title:"Degas: Plesalke v roza",artist:"Edgar Degas, ~1867–68",img:"images/Edgar_Degas,_1867c_-_Ballerinas_in_Pink.jpg"},
       {title:"Monet: Lokvanjske lise",artist:"Claude Monet, 1906",img:"images/Claude_Monet_-_Water_Lilies_-_1906,_Ryerson.jpg"},
-      {title:"Pissarro: Boulevard Montmartre pono\u010di",artist:"Camille Pissarro, 1897",img:"images/pissarro_boulevard_montmartre_ponoci.jpg"},
-      {title:"Caillebotte: Pari\u0161ka ulica v de\u017eu",artist:"Gustave Caillebotte, 1877",img:"images/Gustave_Caillebotte_-_Paris_Street;_Rainy_Day_-_Google_Art_Project.jpg"}
+      {title:"Pissarro: Boulevard Montmartre ponoči",artist:"Camille Pissarro, 1897",img:"images/pissarro_boulevard_montmartre_ponoci.jpg"},
+      {title:"Caillebotte: Pariška ulica v dežju",artist:"Gustave Caillebotte, 1877",img:"images/Gustave_Caillebotte_-_Paris_Street;_Rainy_Day_-_Google_Art_Project.jpg"}
     ]
   },
   {
-    leto:"1919\u20131933", naslov:"Bauhaus",
+    leto:"1919–1933",
+    naslov:"Bauhaus",
     paleta:["#E63329","#1A5FA8","#F5C842","#2A2A2A","#FFFFFF","#8A8A8A"],
-    imena:["Primarna rde\u010da","Primarna modra","Primarna rumena","\u010crnina","Belina","Siva"],
-    opis:"Primarne barve z geometrijsko natan\u010dnostjo. Bauhaus je zdru\u017eil umetnost in obrt z revolucionarno estetiko funkcionalnosti \u2014 forma sledi funkciji.",
+    imena:["Primarna rdeča","Primarna modra","Primarna rumena","Črnina","Belina","Siva"],
+    opis:"Primarne barve z geometrijsko natančnostjo. Bauhaus je združil umetnost in obrt z revolucionarno estetiko funkcionalnosti — forma sledi funkciji.",
     dela:[
       {title:"Kandinsky: Kompozicija VIII",artist:"Wassily Kandinsky, 1923",img:"images/Wassily_Kandinsky_Composition_VIII.jpg"},
       {title:"Mondrian: Kompozicija II",artist:"Piet Mondrian, 1930",img:"images/Mondrian_-_Composition_no_II,_1929.jpg"},
       {title:"Paul Klee: Ceste in stranpoti",artist:"Paul Klee, 1929",img:"images/Highway-byways.png"},
-      {title:"Kandinsky: Rumeno-rde\u010de-modro",artist:"Wassily Kandinsky, 1925",img:"images/kandinsky_rumeno_rdece_modro_wassily_kandinsky_1925.jpg"},
+      {title:"Kandinsky: Rumeno-rdeče-modro",artist:"Wassily Kandinsky, 1925",img:"images/kandinsky_rumeno_rdece_modro_wassily_kandinsky_1925.jpg"},
       {title:"Herbert Bayer: Bauhaus poster",artist:"Herbert Bayer, 1923",img:"images/herbert_bayer_bauhaus_razstava_poster_herbert_bayer_1923.jpg"},
-      {title:"Bauhaus stavba Dessau",artist:"Walter Gropius, 1925\u201326",img:"images/bauhaus_stavba_dessau_walter_gropius_1925_26.jpg"}
+      {title:"Bauhaus stavba Dessau",artist:"Walter Gropius, 1925–26",img:"images/bauhaus_stavba_dessau_walter_gropius_1925_26.jpg"}
     ]
   },
   {
-    leto:"1955\u20131975", naslov:"Pop Art",
+    leto:"1955–1975",
+    naslov:"Pop Art",
     paleta:["#FF1493","#FF6B00","#FFD700","#00CED1","#7B2FBE","#FF0000"],
-    imena:["Neon roza","Oran\u017ena","Rumena","Turkizna","Vijoli\u010dna","Rde\u010da"],
-    opis:"\u017darece, nasi\u010dene barve iz popularne kulture in mno\u017ei\u010dnih medijev. Pop Art je zavrnil tradicijo visoke umetnosti in objel estetiko potro\u0161ni\u0161tva, reklam in stripov.",
+    imena:["Neon roza","Oranžna","Rumena","Turkizna","Vijolična","Rdeča"],
+    opis:"Žareče, nasičene barve iz popularne kulture in množičnih medijev. Pop Art je zavrnil tradicijo visoke umetnosti in objel estetiko potrošništva, reklam in stripov.",
     dela:[
       {title:"Andy Warhol: Marilyn Monroe",artist:"Andy Warhol, 1962",img:"images/andy_warhol_marilyn_monroe_andy_warhol_1962.jpg"},
       {title:"Roy Lichtenstein: Whaam!",artist:"Roy Lichtenstein, 1963",img:"images/roy_lichtenstein_whaam_roy_lichtenstein_1963.jpg"},
       {title:"David Hockney: A Bigger Splash",artist:"David Hockney, 1967",img:"images/david_hockney_a_bigger_splash_david_hockney_1967.jpg"},
-      {title:"Jasper Johns: Flag",artist:"Jasper Johns, 1954\u201355",img:"images/jasper_johns_flag_jasper_johns_1954_55.jpg"},
+      {title:"Jasper Johns: Flag",artist:"Jasper Johns, 1954–55",img:"images/jasper_johns_flag_jasper_johns_1954_55.jpg"},
       {title:"Andy Warhol: Campbell's Soup Cans",artist:"Andy Warhol, 1962",img:"images/andy_warhol_campbell_s_soup_cans_andy_warhol_1962.jpg"},
       {title:"Roy Lichtenstein: Drowning Girl",artist:"Roy Lichtenstein, 1963",img:"images/roy_lichtenstein_drowning_girl.jpg"}
     ]
   },
   {
-    leto:"1990\u2013danes", naslov:"Digitalna doba",
+    leto:"1990–danes",
+    naslov:"Digitalna doba",
     paleta:["#00FF41","#0080FF","#FF0080","#FFD700","#8000FF","#00FFFF"],
-    imena:["Matrix zelena","Digitalna modra","Neon magenta","Elektri\u010dna rumena","Ultra vijoli\u010dna","Cyan"],
-    opis:"Digitalni sijaj in neonske barve RGB zaslonov. Digitalna umetnost je razprla meje med resni\u010dnim in virtualnim, ustvarila nove estetike od pikselne umetnosti do NFT-jev.",
+    imena:["Matrix zelena","Digitalna modra","Neon magenta","Električna rumena","Ultra vijolična","Cyan"],
+    opis:"Digitalni sijaj in neonske barve RGB zaslonov. Digitalna umetnost je razprla meje med resničnim in virtualnim, ustvarila nove estetike od pikselne umetnosti do NFT-jev.",
     dela:[
-      {title:"Beeple: Everydays \u2014 5000 dni",artist:"Beeple, 2021",img:"images/Everydays,_the_First_5000_Days.jpg"},
+      {title:"Beeple: Everydays — 5000 dni",artist:"Beeple, 2021",img:"images/Everydays,_the_First_5000_Days.jpg"},
       {title:"Refik Anadol: Unsupervised",artist:"Refik Anadol, 2022",img:"images/refik_anadol_unsupervised_moma_refik_anadol_2022.jpg"},
-      {title:"James Turrell: Roden Crater",artist:"James Turrell, 1977\u2013danes",img:"images/james_turrell_roden_crater_james_turrell_1977_danes.jpg"},
-      {title:"TeamLab: Cvetli\u010dni gozd",artist:"TeamLab, 2017",img:"images/teamlab_cvetlicni_gozd_teamlab_2017.jpg"},
+      {title:"James Turrell: Roden Crater",artist:"James Turrell, 1977–danes",img:"images/james_turrell_roden_crater_james_turrell_1977_danes.jpg"},
+      {title:"TeamLab: Cvetlični gozd",artist:"TeamLab, 2017",img:"images/teamlab_cvetlicni_gozd_teamlab_2017.jpg"},
       {title:"Olafur Eliasson: The Weather Project",artist:"Olafur Eliasson, 2003",img:"images/olafur_eliasson_the_weather_project_olafur_eliasson_2003.jpg"},
-      {title:"Casey Reas: Process umetnost",artist:"Casey Reas, 2004\u2013",img:"images/casey_reas_process_umetnost_casey_reas_2004.svg"}
+      {title:"Casey Reas: Process umetnost",artist:"Casey Reas, 2004–",img:"images/casey_reas_process_umetnost_casey_reas_2004.svg"}
     ]
   }
 ];
+
+const PERIOD_DETAILS = {
+  "Prazgodovina": {
+    description: "Prazgodovinska umetnost zajema zelo dolgo obdobje pred razvojem pisave, ko so ljudje podobe ustvarjali na stenah jam, skalnih zavetiščih, predmetih in manjših kipcih. Najbolj znane so paleolitske jamske poslikave in gravure, ki prikazujejo živali, lovske prizore, odtise rok, abstraktne znake in simbolne figure. Ustvarjalci so uporabljali naravne materiale, kot so rdeča in rumena okra, oglje, manganovi oksidi, apnenec in živalske maščobe. Zato v barvni paleti pogosto prevladujejo okrasti, rjavi, črni, rdečkasti in peščeni toni. Kompozicije so pogosto prilagojene reliefu jamskih sten, kar kaže na premišljeno uporabo prostora, svetlobe in naravnih oblik. Namen teh podob ni povsem znan, saj ni pisnih virov, vendar jih raziskovalci povezujejo z obredi, pripovedovanjem, skupinsko identiteto in simbolnim razumevanjem sveta. Prazgodovinska umetnost tako kaže, da so bile sposobnosti opazovanja, abstrakcije in vizualnega izražanja razvite že v najstarejših človeških skupnostih.",
+    artists: [],
+    notes: [
+      "Ker avtorji niso znani, obdobje predstavljajo predvsem najdišča, kot so Lascaux, Altamira, Chauvet, Cueva de las Manos in Bhimbetka."
+    ]
+  },
+
+  "Stari Egipt": {
+    description: "Umetnost starega Egipta je bila tesno povezana z religijo, vladarsko ideologijo in predstavo o življenju po smrti. Podobe faraonov, bogov, obredov in vsakdanjih opravil niso bile ustvarjene zgolj za okras, temveč za ohranjanje reda, večnosti in božanske legitimnosti oblasti. Egipčanski umetniki so uporabljali ustaljena ikonografska pravila, jasne konture, ravne barvne ploskve in hierarhično kompozicijo, pri kateri so pomembnejše figure pogosto prikazane večje. Slog se je skozi dolga obdobja spreminjal razmeroma počasi, čeprav so se med posameznimi dinastijami in obdobji pojavljale pomembne razlike. Barve so imele simbolni pomen: zlata je bila povezana z božanskim in soncem, modra z vodo, nebom in preporodom, zelena s plodnostjo in obnovo, črna pa z rodovitno nilsko zemljo. Pigmente so pridobivali iz mineralov, kot so okra, malahit in egipčanska modra. Večina ustvarjalcev je ostala anonimna, vendar poznamo nekaj pomembnih mojstrov, arhitektov in uradnikov, povezanih z umetnostjo in gradnjo. Egipčanska umetnost je eden najmočnejših primerov, kako lahko podobe služijo religiji, politiki in predstavi o večnosti.",
+    artists: ["Thutmose", "Imhotep", "Senenmut", "Hemiunu"],
+    notes: [
+      "Nefertitina bista in Tutankamonova posmrtna maska sta med najbolj prepoznavnimi simboli egipčanske umetnosti.",
+      "Imena na seznamu niso vsi slikarji v sodobnem pomenu, temveč znani ustvarjalci, arhitekti ali mojstri, povezani z egipčansko umetnostjo in gradnjo."
+    ]
+  },
+
+  "Srednji vek": {
+    description: "Srednjeveška umetnost v Evropi je bila večinoma povezana s krščansko vero, liturgijo in naročili cerkvenih ustanov, vladarjev ali plemstva. Nastajala je v samostanih, cerkvah, katedralah, delavnicah in mestnih središčih. Pomembne zvrsti so bile iluminirani rokopisi, freske, mozaiki, ikone, oltarne slike, vitraži, reliefi in kiparstvo. Namen podob ni bil predvsem posnemanje vidnega sveta, temveč posredovanje duhovnega pomena, zato so simboli, barve, geste in hierarhična velikost figur pogosto pomembnejši od realistične perspektive. Zlata ozadja so poudarjala božansko prisotnost, modra, rdeča in vijolična pa so imele močan simbolni in statusni pomen. V romanskem in gotskem obdobju se razvijejo velike cerkvene stavbe, v katerih se arhitektura, kiparstvo in vitraži združujejo v celostno versko izkušnjo. Proti koncu srednjega veka, zlasti pri italijanskih mojstrih, se pojavi več zanimanja za prostor, čustva, naravne gibe in človeško figuro, kar napoveduje renesanso. Obdobje je ključno za razumevanje umetnosti kot vizualne teologije in učnega sredstva za vernike.",
+    artists: ["Giotto di Bondone", "Duccio di Buoninsegna", "Simone Martini", "Andrej Rubljev", "Hildegard von Bingen"],
+    notes: [
+      "Giotto, Duccio in Simone Martini sodijo v pozni srednji vek oziroma proto-renesanso.",
+      "Gotske katedrale so združevale arhitekturo, kiparstvo, vitraž in liturgični prostor."
+    ]
+  },
+
+  "Renesansa": {
+    description: "Renesansa je umetnostno obdobje, ki se je razvilo med 14. in 16. stoletjem ter temelji na ponovnem zanimanju za antično kulturo, naravo, človeka in znanstveno opazovanje. Umetniki so razvijali linearno perspektivo, anatomsko natančnost, prepričljivejši prostor in bolj naravno upodobitev človeškega telesa. Humanizem je spodbudil novo razumevanje posameznika, zato se ob verskih motivih okrepijo portreti, mitološki prizori in prizori iz antične zgodovine. Mecenstvo mestnih držav, cerkve in bogatih družin je omogočilo razvoj velikih delavnic in izjemno tehnično izpopolnjenost. Barvna paleta je pogosto bogata, vendar bolj prefinjena kot v srednjem veku, z uporabo zemeljskih tonov, premišljenih svetlobnih prehodov in dragocenih pigmentov. Tehnike, kot so chiaroscuro, sfumato in perspektiva, so umetnikom omogočile večjo prostorsko iluzijo in psihološko globino figur. Renesansa je pomembna zato, ker je utrdila predstavo o umetniku kot izobraženem ustvarjalcu, raziskovalcu in avtorju, ne le kot anonimnem obrtniku.",
+    artists: ["Leonardo da Vinci", "Michelangelo", "Rafael", "Sandro Botticelli", "Tizian"],
+    notes: [
+      "Linearno perspektivo, naturalizem in anatomsko opazovanje uvrščamo med ključne dosežke renesančne umetnosti.",
+      "Firence, Rim in Benetke so bila med najpomembnejšimi središči italijanske renesanse."
+    ]
+  },
+
+  "Impresionizem": {
+    description: "Impresionizem se je razvil v Franciji v drugi polovici 19. stoletja kot odziv na akademsko slikarstvo in uradne razstavne salone. Umetniki so pogosto slikali na prostem, da bi ujeli trenutne učinke svetlobe, vremena, atmosfere in gibanja. Namesto gladko zaključenih površin so uporabljali kratke, vidne poteze čopiča, svetlejšo paleto in barvne kontraste, ki se optično povežejo šele v pogledu gledalca. Sence niso več nujno črne ali rjave, temveč so sestavljene iz hladnih in toplih barvnih odtenkov. Tematsko so se impresionisti posvečali sodobnemu življenju: mestnim prizorom, kavarnam, gledališčem, plesalkam, železnicam, rekreaciji, pokrajini in vodi. Na njihov razvoj so vplivali fotografija, novi industrijski pigmenti, prenosljive tube z barvo in spremenjeno mestno življenje Pariza. Prva skupinska razstava leta 1874 je bila sprva deležna posmeha, vendar je prav Monetova slika Impression, soleil levant prispevala k imenu gibanja. Impresionizem je odprl pot moderni umetnosti, ker je poudaril subjektivno zaznavo, trenutek in svetlobno izkušnjo.",
+    artists: ["Claude Monet", "Pierre-Auguste Renoir", "Edgar Degas", "Camille Pissarro", "Berthe Morisot"],
+    notes: [
+      "Prva impresionistična razstava je bila leta 1874 v Parizu.",
+      "Ime gibanja je povezano z Monetovo sliko Impression, soleil levant iz leta 1872."
+    ]
+  },
+
+  "Bauhaus": {
+    description: "Bauhaus je bila vplivna umetniška, oblikovalska in arhitekturna šola, ki jo je Walter Gropius ustanovil leta 1919 v Weimarju. Njen cilj je bil povezati umetnost, obrt, tehnologijo in industrijsko proizvodnjo v enoten, funkcionalen in sodoben oblikovalski jezik. Bauhaus je zavračal nepotrebno dekoracijo ter poudarjal jasne oblike, uporabnost, konstrukcijsko logiko in razumevanje materialov. V učnem programu so bile pomembne delavnice za tekstil, kovino, pohištvo, tipografijo, fotografijo, scenografijo in arhitekturo. Pri vizualnem jeziku Bauhausa se pogosto pojavljajo geometrijske oblike, uravnotežena kompozicija, primarne barve in premišljena raba prostora. Šola se je preselila iz Weimarja v Dessau in nato v Berlin, leta 1933 pa je bila zaradi političnega pritiska nacističnega režima zaprta. Kljub kratkemu delovanju je Bauhaus močno vplival na moderno arhitekturo, grafično oblikovanje, industrijsko oblikovanje, notranjo opremo in kasnejši minimalizem.",
+    artists: ["Walter Gropius", "Paul Klee", "Wassily Kandinsky", "László Moholy-Nagy", "Marcel Breuer", "Josef Albers"],
+    notes: [
+      "Bauhaus je deloval med letoma 1919 in 1933.",
+      "Šola je delovala v Weimarju, Dessauu in Berlinu."
+    ]
+  },
+
+  "Pop Art": {
+    description: "Pop Art se je razvil v petdesetih in šestdesetih letih 20. stoletja, najprej v Veliki Britaniji in nato izrazito tudi v Združenih državah Amerike. Gibanje je v umetnost vključilo podobe iz množične kulture, oglaševanja, stripov, filma, televizije, embalaže in potrošniških izdelkov. Namesto tradicionalnih zgodovinskih ali mitoloških motivov so umetniki uporabljali vsakdanje predmete, slavne osebnosti, logotipe in medijske podobe. Značilne so močne, nasičene barve, jasne konture, ponavljanje motivov, povečave in postopki, povezani s tiskom, fotografijo ali industrijsko reprodukcijo. Pop Art ni zgolj slavil potrošniške kulture, temveč jo je pogosto obravnaval dvoumno, z ironijo, distanco ali kritičnim pogledom. S tem je zabrisal mejo med visoko umetnostjo in popularno kulturo ter razširil vprašanje, kaj lahko postane umetniški motiv. Gibanje je pomembno vplivalo na postmodernizem, grafično oblikovanje, modo, oglaševanje in sodobno vizualno kulturo.",
+    artists: ["Andy Warhol", "Roy Lichtenstein", "Richard Hamilton", "Claes Oldenburg", "James Rosenquist", "Tom Wesselmann"],
+    notes: [
+      "Pop Art je uporabljal motive iz oglaševanja, stripov, embalaže, filma in množičnih medijev.",
+      "Andy Warhol in Roy Lichtenstein sta med najbolj prepoznavnimi predstavniki ameriškega Pop Arta."
+    ]
+  },
+
+  "Digitalna doba": {
+    description: "Digitalna doba v umetnosti zajema ustvarjanje od poznega 20. stoletja naprej, ko računalniki, internet, programska oprema, interaktivni sistemi in podatki postanejo pomembna umetniška sredstva. Umetniki uporabljajo kodo, algoritme, 3D modeliranje, podatkovne baze, umetno inteligenco, obogateno resničnost, navidezno resničnost, spletne platforme in projekcije. Digitalna dela pogosto niso vezana na en sam fizični predmet, temveč obstajajo kot proces, izkušnja, zaslonska podoba, interaktivna instalacija ali datoteka. Barvna estetika je pogosto povezana z RGB zasloni, neonskimi kontrasti, pikselno strukturo, podatkovno vizualizacijo in svetlobnimi učinki. Pomembna značilnost digitalne umetnosti je tudi vprašanje avtorstva: umetnik lahko oblikuje sistem pravil, medtem ko končna podoba nastaja skozi algoritem, podatke, naključje ali odziv gledalca. Generativna umetnost temelji na vnaprej določenem sistemu, pogosto z elementi nepredvidljivosti. V zadnjih letih so umetna inteligenca, NFT-ji in spletna distribucija dodatno spremenili način ustvarjanja, zbiranja in razumevanja umetnosti. Kljub tehnološkim spremembam ostaja osrednje vprašanje enako: kako z novimi mediji ustvariti prepričljivo vizualno, čutno in kritično izkušnjo.",
+    artists: ["Casey Reas", "Refik Anadol", "Beeple", "Rafael Lozano-Hemmer", "teamLab"],
+    notes: [
+      "Generativna umetnost nastaja s pomočjo pravil, sistemov, algoritmov ali postopkov, ki lahko vključujejo tudi naključje.",
+      "Digitalna umetnost pogosto obstaja kot proces, interakcija ali izkušnja, ne le kot fizični predmet."
+    ]
+  }
+};
 
 let ERAS = PRIVZETE_DOBE;
 let activeIdx = 4;
 
 const POMEMBNA_DELA = {
   "Prazgodovina": [
-    {title:"Lascaux: jamske poslikave",artist:"Neznan umetnik, ~17000 pr.n.st.",imgs:["images/Lascaux_painting.jpg","images/Lascaux_01.jpg"]},
-    {title:"Altamira: bizon",artist:"Neznan umetnik, ~14000 pr.n.st.",imgs:["images/9_Bisonte_Magdaleniense_polícromo.jpg","images/Altamira,_bison.jpg"]},
-    {title:"Chauvet: konji",artist:"Neznan umetnik, ~32000 pr.n.st.",imgs:["images/chauvet_konji_neznan_umetnik_32000_pr_n_st_2.jpg","images/chauvet_konji_neznan_umetnik_32000_pr_n_st_3.jpg"]},
-    {title:"Cueva de las Manos: roke",artist:"Neznan umetnik, ~9000 pr.n.st.",imgs:["images/cueva_de_las_manos_roke_neznan_umetnik_9000_pr_n_st.jpg","images/SantaCruz-CuevaManos-P2210651b.jpg"]},
-    {title:"Willendorfska Venera",artist:"Neznan umetnik, ~28000 pr.n.st.",imgs:["images/willendorfska_venera_neznan_umetnik_28000_pr_n_st.jpg","images/Venus_von_Willendorf_01.jpg"]},
-    {title:"Bhimbetka: skalne poslikave",artist:"Neznan umetnik, ~10000 pr.n.st.",imgs:["images/bhimbetka_skalne_poslikave_neznan_umetnik_10000_pr_n_st_2.jpg"]},
+    {title:"Lascaux: jamske poslikave",artist:"Neznan umetnik, ~17000 pr. n. št.",imgs:["images/Lascaux_painting.jpg","images/Lascaux_01.jpg"]},
+    {title:"Altamira: bizon",artist:"Neznan umetnik, ~14000 pr. n. št.",imgs:["images/9_Bisonte_Magdaleniense_polícromo.jpg","images/Altamira,_bison.jpg"]},
+    {title:"Chauvet: konji",artist:"Neznan umetnik, ~32000 pr. n. št.",imgs:["images/chauvet_konji_neznan_umetnik_32000_pr_n_st_2.jpg","images/chauvet_konji_neznan_umetnik_32000_pr_n_st_3.jpg"]},
+    {title:"Cueva de las Manos: roke",artist:"Neznan umetnik, ~9000 pr. n. št.",imgs:["images/cueva_de_las_manos_roke_neznan_umetnik_9000_pr_n_st.jpg","images/SantaCruz-CuevaManos-P2210651b.jpg"]},
+    {title:"Willendorfska Venera",artist:"Neznan umetnik, ~28000 pr. n. št.",imgs:["images/willendorfska_venera_neznan_umetnik_28000_pr_n_st.jpg","images/Venus_von_Willendorf_01.jpg"]},
+    {title:"Bhimbetka: skalne poslikave",artist:"Neznan umetnik, ~10000 pr. n. št.",imgs:["images/bhimbetka_skalne_poslikave_neznan_umetnik_10000_pr_n_st_2.jpg"]},
     {title:"Niaux: bizoni",artist:"Neznan umetnik, paleolitik",imgs:["images/niaux_bizoni_neznan_umetnik_paleolitik.jpg"]},
     {title:"Serra da Capivara: skalna umetnost",artist:"Neznan umetnik, prazgodovina",imgs:["images/serra_da_capivara_skalna_umetnost_neznan_umetnik_prazgodovina.jpg"]}
   ],
   "Stari Egipt": [
-    {title:"Tutankamonova zlata maska",artist:"Neznan umetnik, ~1323 pr.n.st.",imgs:["images/CairoEgMuseumTaaMaskMostlyPhotographed.jpg","images/Mask_of_Tutankhamun_in_2025.jpg"]},
-    {title:"Nefertitina bista",artist:"Thutmose, ~1345 pr.n.st.",imgs:["images/Nefertiti_30-01-2006.jpg","images/Nofretete_Neues_Museum.jpg"]},
-    {title:"Knjiga mrtvih: tehtanje srca",artist:"Neznan umetnik, ~1275 pr.n.st.",imgs:["images/knjiga_mrtvih_tehtanje_srca_neznan_umetnik_1275_pr_n_st.jpg","images/knjiga_mrtvih_tehtanje_srca_neznan_umetnik_1275_pr_n_st_2.jpg"]},
-    {title:"Grobnica Nebamun",artist:"Neznan umetnik, ~1350 pr.n.st.",imgs:["images/grobnica_nebamun_neznan_umetnik_1350_pr_n_st.jpg","images/grobnica_nebamun_neznan_umetnik_1350_pr_n_st_2.jpg"]},
-    {title:"Velika sfinga v Gizi",artist:"Neznan umetnik, ~2500 pr.n.st.",imgs:["images/velika_sfinga_v_gizi_neznan_umetnik_2500_pr_n_st.jpg"]},
-    {title:"Amenhotep III",artist:"Neznan umetnik, ~1360 pr.n.st.",imgs:["images/amenhotep_iii_neznan_umetnik_1360_pr_n_st.jpg"]},
-    {title:"Narmerjeva paleta",artist:"Neznan umetnik, ~3100 pr.n.st.",imgs:["images/narmerjeva_paleta_neznan_umetnik_3100_pr_n_st.jpg"]},
-    {title:"Abu Simbel: tempelj Ramzesa II",artist:"Neznan umetnik, 13. stol. pr.n.st.",imgs:["images/abu_simbel_tempelj_ramzesa_ii_neznan_umetnik_13_stol_pr_n_st.jpg"]}
+    {title:"Tutankamonova zlata maska",artist:"Neznan umetnik, ~1323 pr. n. št.",imgs:["images/CairoEgMuseumTaaMaskMostlyPhotographed.jpg","images/Mask_of_Tutankhamun_in_2025.jpg"]},
+    {title:"Nefertitina bista",artist:"Thutmose, ~1345 pr. n. št.",imgs:["images/Nefertiti_30-01-2006.jpg","images/Nofretete_Neues_Museum.jpg"]},
+    {title:"Knjiga mrtvih: tehtanje srca",artist:"Neznan umetnik, ~1275 pr. n. št.",imgs:["images/knjiga_mrtvih_tehtanje_srca_neznan_umetnik_1275_pr_n_st.jpg","images/knjiga_mrtvih_tehtanje_srca_neznan_umetnik_1275_pr_n_st_2.jpg"]},
+    {title:"Grobnica Nebamun",artist:"Neznan umetnik, ~1350 pr. n. št.",imgs:["images/grobnica_nebamun_neznan_umetnik_1350_pr_n_st.jpg","images/grobnica_nebamun_neznan_umetnik_1350_pr_n_st_2.jpg"]},
+    {title:"Velika sfinga v Gizi",artist:"Neznan umetnik, ~2500 pr. n. št.",imgs:["images/velika_sfinga_v_gizi_neznan_umetnik_2500_pr_n_st.jpg"]},
+    {title:"Amenhotep III",artist:"Neznan umetnik, ~1360 pr. n. št.",imgs:["images/amenhotep_iii_neznan_umetnik_1360_pr_n_st.jpg"]},
+    {title:"Narmerjeva paleta",artist:"Neznan umetnik, ~3100 pr. n. št.",imgs:["images/narmerjeva_paleta_neznan_umetnik_3100_pr_n_st.jpg"]},
+    {title:"Abu Simbel: tempelj Ramzesa II",artist:"Neznan umetnik, 13. stol. pr. n. št.",imgs:["images/abu_simbel_tempelj_ramzesa_ii_neznan_umetnik_13_stol_pr_n_st.jpg"]}
   ],
   "Srednji vek": [
-    {title:"Tres Riches Heures: januar",artist:"Bratje Limbourg, 1412-16",imgs:["images/tres_riches_heures_januar_bratje_limbourg_1412_16.jpg"]},
+    {title:"Très Riches Heures: januar",artist:"Bratje Limbourg, 1412–16",imgs:["images/tres_riches_heures_januar_bratje_limbourg_1412_16.jpg"]},
     {title:"Andrej Rubljev: Trojica",artist:"Andrej Rubljev, ~1411",imgs:["images/Andrey_Rublev_-_Св._Троица_-_Google_Art_Project.jpg"]},
     {title:"Knjiga iz Kellsa",artist:"Irski menihi, ~800",imgs:["images/KellsFol032vChristEnthroned.jpg"]},
     {title:"Mozaik Justinijana I",artist:"Ravenna, ~547",imgs:["images/Justinian_mosaic,_San_Vitale,_consecrated_547,_Ravenna,_Italy.jpg"]},
     {title:"Giotto: Objokovanje Kristusa",artist:"Giotto di Bondone, ~1305",imgs:["images/Giotto_-_Scrovegni_-_-36-_-_Lamentation_(The_Mourning_of_Christ)_adj.jpg"]},
-    {title:"Tapiserija iz Bayeuxa",artist:"Neznan mojster, ~1070-80",imgs:["images/Bayeux_Tapestry_scene57_Harold_death.jpg"]},
+    {title:"Tapiserija iz Bayeuxa",artist:"Neznan mojster, ~1070–80",imgs:["images/Bayeux_Tapestry_scene57_Harold_death.jpg"]},
     {title:"Chartres: Modra Devica",artist:"Neznani mojstri, 12. stol.",imgs:["images/chartres_modra_devica_neznani_mojstri_12_stol.jpg"]},
-    {title:"Duccio: Maesta",artist:"Duccio di Buoninsegna, 1308-11",imgs:["images/duccio_maesta_duccio_di_buoninsegna_1308_11.jpg"]}
+    {title:"Duccio: Maestà",artist:"Duccio di Buoninsegna, 1308–11",imgs:["images/duccio_maesta_duccio_di_buoninsegna_1308_11.jpg"]}
   ],
   "Renesansa": [
-    {title:"Leonardo da Vinci: Mona Lisa",artist:"Leonardo da Vinci, 1503-19",imgs:["images/Mona_Lisa,_by_Leonardo_da_Vinci,_from_C2RMF_retouched.jpg","images/Mona_Lisa.jpg"]},
-    {title:"Botticelli: Rojstvo Venere",artist:"Sandro Botticelli, ~1484-86",imgs:["images/Sandro_Botticelli_-_La_nascita_di_Venere_-_Google_Art_Project_-_edited.jpg"]},
-    {title:"Raphael: Sola v Atenah",artist:"Raphael, 1509-11",imgs:["images/_The_School_of_Athens__by_Raffaello_Sanzio_da_Urbino.jpg"]},
-    {title:"Michelangelo: Stvaritev Adama",artist:"Michelangelo, 1508-12",imgs:["images/Michelangelo_-_Creation_of_Adam_(cropped).jpg"]},
+    {title:"Leonardo da Vinci: Mona Lisa",artist:"Leonardo da Vinci, 1503–19",imgs:["images/Mona_Lisa,_by_Leonardo_da_Vinci,_from_C2RMF_retouched.jpg","images/Mona_Lisa.jpg"]},
+    {title:"Botticelli: Rojstvo Venere",artist:"Sandro Botticelli, ~1484–86",imgs:["images/Sandro_Botticelli_-_La_nascita_di_Venere_-_Google_Art_Project_-_edited.jpg"]},
+    {title:"Raphael: Šola v Atenah",artist:"Raphael, 1509–11",imgs:["images/_The_School_of_Athens__by_Raffaello_Sanzio_da_Urbino.jpg"]},
+    {title:"Michelangelo: Stvaritev Adama",artist:"Michelangelo, 1508–12",imgs:["images/Michelangelo_-_Creation_of_Adam_(cropped).jpg"]},
     {title:"Jan van Eyck: Arnolfinijeva poroka",artist:"Jan van Eyck, 1434",imgs:["images/Eyck,_Jan_van_-_Arnolfini_Portrait_-_NG.jpg"]},
-    {title:"Tizian: Marijino vnebovzetje",artist:"Tizian, 1516-18",imgs:["images/tizian_marijino_vnebovzetje_tizian_1516_18.jpg"]},
-    {title:"Leonardo da Vinci: Zadnja vecerja",artist:"Leonardo da Vinci, 1495-98",imgs:["images/leonardo_da_vinci_zadnja_vecerja_leonardo_da_vinci_1495_98.jpg"]},
+    {title:"Tizian: Marijino vnebovzetje",artist:"Tizian, 1516–18",imgs:["images/tizian_marijino_vnebovzetje_tizian_1516_18.jpg"]},
+    {title:"Leonardo da Vinci: Zadnja večerja",artist:"Leonardo da Vinci, 1495–98",imgs:["images/leonardo_da_vinci_zadnja_vecerja_leonardo_da_vinci_1495_98.jpg"]},
     {title:"Botticelli: Primavera",artist:"Sandro Botticelli, ~1482",imgs:["images/botticelli_primavera_sandro_botticelli_1482.jpg"]}
   ],
   "Impresionizem": [
     {title:"Monet: Impression, soleil levant",artist:"Claude Monet, 1872",imgs:["images/Claude_Monet,_Impression,_soleil_levant.jpg","images/Monet_-_Impression,_Sunrise.jpg"]},
     {title:"Renoir: Bal du Moulin de la Galette",artist:"Pierre-Auguste Renoir, 1876",imgs:["images/Auguste_Renoir_-_Dance_at_Le_Moulin_de_la_Galette_-_Google_Art_Project.jpg"]},
-    {title:"Degas: Plesalke v roza",artist:"Edgar Degas, ~1867-68",imgs:["images/Edgar_Degas,_1867c_-_Ballerinas_in_Pink.jpg"]},
+    {title:"Degas: Plesalke v roza",artist:"Edgar Degas, ~1867–68",imgs:["images/Edgar_Degas,_1867c_-_Ballerinas_in_Pink.jpg"]},
     {title:"Monet: Lokvanjske lise",artist:"Claude Monet, 1906",imgs:["images/Claude_Monet_-_Water_Lilies_-_1906,_Ryerson.jpg"]},
-    {title:"Pissarro: Boulevard Montmartre ponoci",artist:"Camille Pissarro, 1897",imgs:["images/pissarro_boulevard_montmartre_ponoci.jpg"]},
-    {title:"Caillebotte: Pariska ulica v dezju",artist:"Gustave Caillebotte, 1877",imgs:["images/caillebotte_pariska_ulica_v_dezju_gustave_caillebotte_1877.jpg"]},
+    {title:"Pissarro: Boulevard Montmartre ponoči",artist:"Camille Pissarro, 1897",imgs:["images/pissarro_boulevard_montmartre_ponoci.jpg"]},
+    {title:"Caillebotte: Pariška ulica v dežju",artist:"Gustave Caillebotte, 1877",imgs:["images/caillebotte_pariska_ulica_v_dezju_gustave_caillebotte_1877.jpg"]},
     {title:"Berthe Morisot: Zibelka",artist:"Berthe Morisot, 1872",imgs:["images/berthe_morisot_zibelka_berthe_morisot_1872.jpg"]},
-    {title:"Mary Cassatt: Otroska kopel",artist:"Mary Cassatt, 1893",imgs:["images/mary_cassatt_otroska_kopel_mary_cassatt_1893.jpeg"]}
+    {title:"Mary Cassatt: Otroška kopel",artist:"Mary Cassatt, 1893",imgs:["images/mary_cassatt_otroska_kopel_mary_cassatt_1893.jpeg"]}
   ],
   "Bauhaus": [
     {title:"Kandinsky: Kompozicija VIII",artist:"Wassily Kandinsky, 1923",imgs:["images/kandinsky_kompozicija_viii_wassily_kandinsky_1923.jpg","images/Wassily_Kandinsky_Composition_VIII.jpg"]},
     {title:"Mondrian: Kompozicija II",artist:"Piet Mondrian, 1930",imgs:["images/Piet_Mondriaan,_1930_-_Mondrian_Composition_II_in_Red,_Blue,_and_Yellow.jpg"]},
     {title:"Paul Klee: Ceste in stranpoti",artist:"Paul Klee, 1929",imgs:["images/Highway-byways.png"]},
-    {title:"Kandinsky: Rumeno-rdece-modro",artist:"Wassily Kandinsky, 1925",imgs:["images/kandinsky_rumeno_rdece_modro_wassily_kandinsky_1925.jpg"]},
+    {title:"Kandinsky: Rumeno-rdeče-modro",artist:"Wassily Kandinsky, 1925",imgs:["images/kandinsky_rumeno_rdece_modro_wassily_kandinsky_1925.jpg"]},
     {title:"Herbert Bayer: Bauhaus poster",artist:"Herbert Bayer, 1923",imgs:["images/herbert_bayer_bauhaus_razstava_poster_herbert_bayer_1923.jpg"]},
-    {title:"Bauhaus stavba Dessau",artist:"Walter Gropius, 1925-26",imgs:["images/bauhaus_stavba_dessau_walter_gropius_1925_26.jpg"]},
+    {title:"Bauhaus stavba Dessau",artist:"Walter Gropius, 1925–26",imgs:["images/bauhaus_stavba_dessau_walter_gropius_1925_26.jpg"]},
     {title:"Bauhaus znak in tipografija",artist:"Bauhaus, 20. stol.",imgs:["images/bauhaus_znak_in_tipografija_bauhaus_20_stol.svg"]},
-    {title:"Bauhaus Dessau: fasada",artist:"Walter Gropius, 1925-26",imgs:["images/bauhaus_dessau_fasada_walter_gropius_1925_26.jpg"]}
+    {title:"Bauhaus Dessau: fasada",artist:"Walter Gropius, 1925–26",imgs:["images/bauhaus_dessau_fasada_walter_gropius_1925_26.jpg"]}
   ],
   "Pop Art": [
     {title:"Andy Warhol: Orange Marilyn",artist:"Andy Warhol, 1962",imgs:["images/Orange_Marilyn,_1962,_silkscreen_painting_by_Andy_Warhol.jpeg","images/Warhol_-_Gold_Marilyn_Monroe_(1962).jpg"]},
     {title:"Roy Lichtenstein: Whaam!",artist:"Roy Lichtenstein, 1963",imgs:["images/roy_lichtenstein_whaam_roy_lichtenstein_1963.jpg","images/roy_lichtenstein_whaam_roy_lichtenstein_1963.jpg"]},
     {title:"David Hockney: A Bigger Splash",artist:"David Hockney, 1967",imgs:["images/david_hockney_a_bigger_splash_david_hockney_1967_2.jpg"]},
-    {title:"Jasper Johns: Flag",artist:"Jasper Johns, 1954-55",imgs:["images/Jasper_Johns's_'Flag',_Encaustic,_oil_and_collage_on_fabric_mounted_on_plywood,1954-55.jpg"]},
+    {title:"Jasper Johns: Flag",artist:"Jasper Johns, 1954–55",imgs:["images/Jasper_Johns's_'Flag',_Encaustic,_oil_and_collage_on_fabric_mounted_on_plywood,1954-55.jpg"]},
     {title:"Andy Warhol: Campbell's Soup Cans",artist:"Andy Warhol, 1962",imgs:["images/Campbell's_Soup_Cans_by_Andy_Warhol.jpg","images/andy_warhol_campbell_s_soup_cans_andy_warhol_1962_2.jpg"]},
     {title:"Roy Lichtenstein: Drowning Girl",artist:"Roy Lichtenstein, 1963",imgs:["images/roy_lichtenstein_drowning_girl.jpg"]},
     {title:"Jasper Johns: Three Flags",artist:"Jasper Johns, 1958",imgs:["images/jasper_johns_three_flags_jasper_johns_1958.jpg"]},
@@ -291,14 +775,25 @@ const POMEMBNA_DELA = {
   "Digitalna doba": [
     {title:"Beeple: Everydays",artist:"Beeple, 2021",imgs:["images/Everydays,_the_First_5000_Days.jpg","images/beeple_everydays_beeple_2021.jpg"]},
     {title:"Refik Anadol: Unsupervised",artist:"Refik Anadol, 2022",imgs:["images/refik_anadol_unsupervised_refik_anadol_2022.jpg"]},
-    {title:"teamLab Planets Tokyo",artist:"teamLab, 2018-",imgs:["images/teamlab_planets_tokyo_teamlab_2018.jpg"]},
+    {title:"teamLab Planets Tokyo",artist:"teamLab, 2018–",imgs:["images/teamlab_planets_tokyo_teamlab_2018.jpg"]},
     {title:"Olafur Eliasson: The Weather Project",artist:"Olafur Eliasson, 2003",imgs:["images/olafur_eliasson_the_weather_project_olafur_eliasson_2003_2.jpg"]},
     {title:"Nam June Paik: Electronic Superhighway",artist:"Nam June Paik, 1995",imgs:["images/nam_june_paik_electronic_superhighway_nam_june_paik_1995.jpg"]},
     {title:"Cory Arcangel: Super Mario Clouds",artist:"Cory Arcangel, 2002",imgs:["images/cory_arcangel_super_mario_clouds_cory_arcangel_2002.gif"]},
     {title:"Beeple: Holographic Interface",artist:"Beeple, digitalna umetnost",imgs:["images/beeple_everydays_beeple_2021.jpg"]},
-    {title:"Processing: ustvarjalno programiranje",artist:"Casey Reas in Ben Fry, 2001-",imgs:["images/casey_reas_process_umetnost_casey_reas_2004.svg"]}
+    {title:"Processing: ustvarjalno programiranje",artist:"Casey Reas in Ben Fry, 2001–",imgs:["images/casey_reas_process_umetnost_casey_reas_2004.svg"]}
   ]
 };
+
+function timelinePercent(index) {
+  if (ERAS.length <= 1) return 0;
+  return (index / (ERAS.length - 1)) * 100;
+}
+
+function edgeTransform(index) {
+  if (index === 0) return 'translateX(-18px)';
+  if (index === ERAS.length - 1) return 'translateX(-100%)';
+  return 'translateX(-50%)';
+}
 
 function logImageIssue(kind, title, src) {
   console.warn('[art-image]', kind, { title, src });
@@ -308,8 +803,10 @@ async function nalozi_podatke() {
   try {
     const odg = await fetch('art_periods_data.json');
     if (!odg.ok) throw new Error('ni najdeno');
+
     const d = await odg.json();
     if (!Array.isArray(d) || d.length === 0) throw new Error('prazno');
+
     ERAS = d.map(x => ({
       leto:   x.leto   || x.year  || '',
       naslov: x.naslov || x.label || '',
@@ -317,14 +814,19 @@ async function nalozi_podatke() {
       imena:  x.imena  || x.names  || Array(6).fill(''),
       opis:   x.opis   || x.description || '',
       dela:  (x.dela   || x.artworks || []).map(a => ({
-        title: a.title || '', artist: a.artist || '', img: a.img || ''
+        title: a.title || '',
+        artist: a.artist || '',
+        year: a.year || a.leto || '',
+        img: a.img || ''
       }))
     }));
-    console.log('Nalozeni JSON podatki:', ERAS.length, 'dob');
+
+    console.log('Naloženi JSON podatki:', ERAS.length, 'dob');
   } catch(e) {
     console.warn('[art-data] JSON load failed', e);
     document.getElementById('statusBanner').classList.add('show');
   }
+
   render();
 }
 
@@ -336,47 +838,120 @@ function barve_za_delo(idx) {
 
 function render() {
   const era = ERAS[activeIdx];
+
   document.getElementById('breadcrumb').textContent = '> ' + era.naslov;
-  document.getElementById('eraLabels').innerHTML = ERAS.map((e,i) =>
-    '<div class="era-label" style="opacity:'+(i===activeIdx?1:0.45)+'" onclick="setEra('+i+')">' +
-    '<div class="year">'+e.leto+'</div><div class="name">('+e.naslov+')</div></div>').join('');
-  document.getElementById('ticks').innerHTML = ERAS.map((e,i) => {
-    const p = i/(ERAS.length-1);
-    return '<div class="tl-tick" style="left:calc('+p*100+'% - 1px);height:'+(i===activeIdx?20:13)+'px"></div>';
+
+  /* POPRAVLJENO:
+     Oznake obdobij uporabljajo isti odstotek kot ticki, handle in palete. */
+  document.getElementById('eraLabels').innerHTML = ERAS.map((e, i) => {
+    const left = timelinePercent(i);
+    const align = edgeTransform(i);
+    return '<div class="era-label" style="left:' + left + '%;transform:' + align + ';opacity:' + (i === activeIdx ? 1 : 0.45) + '" onclick="setEra(' + i + ')">' +
+      '<div class="year">' + e.leto + '</div>' +
+      '<div class="name">(' + e.naslov + ')</div>' +
+    '</div>';
   }).join('');
-  const p = activeIdx/(ERAS.length-1);
-  document.getElementById('handle').style.left = 'calc('+p*100+'%)';
-  document.getElementById('paletteRow').innerHTML = ERAS.map((e,i) =>
-    '<div class="mini-palette" onclick="setEra('+i+')" style="opacity:'+(i===activeIdx?1:0.55)+
-    ';transform:scale('+(i===activeIdx?1.08:1)+');outline:'+(i===activeIdx?'2px solid #1a1a1a':'none')+
-    ';outline-offset:2px;border-radius:4px">'+
-    e.paleta.map((c,j)=>'<div class="mini-swatch" style="background:'+c+
-    ';border-radius:'+(j===0?'3px 0 0 3px':j===e.paleta.length-1?'0 3px 3px 0':'0')+'"></div>').join('')+
-    '</div>').join('');
-  document.getElementById('eraTitle').textContent = 'Izbrana doba: '+era.naslov+' ('+era.leto+')';
-  document.getElementById('paletteGrid').innerHTML = era.paleta.map((c,i) =>
-    '<div class="swatch-item"><div class="swatch-box" style="background:'+c+'"></div>'+
-    '<div><div class="swatch-name">'+(era.imena[i]||'')+'</div>'+
-    '<div class="swatch-hex">'+c.toUpperCase()+'</div></div></div>').join('');
+
+  document.getElementById('ticks').innerHTML = ERAS.map((e, i) => {
+    const left = timelinePercent(i);
+    return '<div class="tl-tick" style="left:calc(' + left + '% - 1px);height:' + (i === activeIdx ? 20 : 13) + 'px"></div>';
+  }).join('');
+
+  const activeLeft = timelinePercent(activeIdx);
+  document.getElementById('handle').style.left = 'calc(' + activeLeft + '%)';
+
+  /* POPRAVLJENO:
+     Mini palete uporabljajo isti odstotek kot zgornje oznake in ticki. */
+  document.getElementById('paletteRow').innerHTML = ERAS.map((e, i) => {
+    const left = timelinePercent(i);
+    const align = edgeTransform(i);
+    return '<div class="mini-palette" onclick="setEra(' + i + ')" style="left:' + left + '%;opacity:' + (i === activeIdx ? 1 : 0.55) +
+      ';transform:' + align + ' scale(' + (i === activeIdx ? 1.08 : 1) + ');outline:' + (i === activeIdx ? '2px solid #1a1a1a' : 'none') +
+      ';outline-offset:2px;border-radius:4px">' +
+      e.paleta.map((c, j) =>
+        '<div class="mini-swatch" style="background:' + c +
+        ';border-radius:' + (j === 0 ? '3px 0 0 3px' : j === e.paleta.length - 1 ? '0 3px 3px 0' : '0') + '"></div>'
+      ).join('') +
+    '</div>';
+  }).join('');
+
+  document.getElementById('eraTitle').textContent = 'Izbrana doba: ' + era.naslov + ' (' + era.leto + ')';
+
+  document.getElementById('paletteGrid').innerHTML = era.paleta.map((c, i) => {
+    const ime = (era.imena && era.imena[i]) ? era.imena[i] : c.toUpperCase();
+    const hex = c.toUpperCase();
+
+    return '<div class="swatch-item">' +
+      '<div class="swatch-box" style="background:' + c + '"></div>' +
+      '<div>' +
+        '<div class="swatch-name">' + ime + '</div>' +
+        '<div class="swatch-hex">' + hex + '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+
   document.getElementById('eraDesc').textContent = era.opis;
+
   document.getElementById('paletteStrip').innerHTML = era.paleta.map(c =>
-    '<div style="flex:1;background:'+c+'"></div>').join('');
+    '<div style="flex:1;background:' + c + '"></div>'
+  ).join('');
+
+  const detail = PERIOD_DETAILS[era.naslov];
+  const detailDesc = document.getElementById('detailDesc');
+  const detailArtists = document.getElementById('detailArtists');
+  const detailNotes = document.getElementById('detailNotes');
+  const detailArtistsBlock = document.getElementById('detailArtistsBlock');
+  const detailNotesBlock = document.getElementById('detailNotesBlock');
+
+  if (detail) {
+    detailDesc.textContent = detail.description;
+
+    if (detail.artists && detail.artists.length > 0) {
+      detailArtistsBlock.style.display = '';
+      detailArtists.innerHTML = detail.artists.map(a => '<li>' + a + '</li>').join('');
+    } else {
+      detailArtistsBlock.style.display = 'none';
+      detailArtists.innerHTML = '';
+    }
+
+    if (detail.notes && detail.notes.length > 0) {
+      detailNotesBlock.style.display = '';
+      detailNotes.innerHTML = detail.notes.map(n => '<li>' + n + '</li>').join('');
+    } else {
+      detailNotesBlock.style.display = 'none';
+      detailNotes.innerHTML = '';
+    }
+  } else {
+    detailDesc.textContent = era.opis || '';
+    detailArtistsBlock.style.display = 'none';
+    detailNotesBlock.style.display = 'none';
+  }
+
   const dela = era.dela || [];
-  document.getElementById('artworksGrid').innerHTML = dela.map((art,idx) => {
+
+  document.getElementById('artworksGrid').innerHTML = dela.map((art, idx) => {
     const barve = barve_za_delo(idx);
-    return '<div class="artwork-card">'+
-      '<div class="artwork-img-wrap">'+
-      '<img class="artwork-img" src="'+art.img+'" alt="'+art.title+'" loading="lazy" referrerpolicy="no-referrer"'+
-      ' onload="logImageIssue(\'loaded\', this.alt, this.currentSrc || this.src)"'+
-      ' onerror="logImageIssue(\'error\', this.alt, this.currentSrc || this.src);this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">'+
-      '<div style="display:none;width:100%;height:160px;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px;padding:8px;background:#eee;">'+
-      barve.map(c=>'<div style="width:24px;height:24px;border-radius:5px;background:'+c+'"></div>').join('')+
-      '</div></div>'+
-      '<div class="artwork-info">'+
-      '<div class="artwork-title">'+art.title+'</div>'+
-      '<div class="artwork-artist">'+(art.artist||'')+'</div>'+
-      '<div class="color-bar">'+barve.map(c=>'<div class="color-bar-seg" style="background:'+c+'"></div>').join('')+'</div>'+
-      '</div></div>';
+
+    return '<div class="artwork-card">' +
+      '<div class="artwork-img-wrap">' +
+        '<img class="artwork-img" src="' + art.img + '" alt="' + art.title + '" loading="lazy" referrerpolicy="no-referrer"' +
+        ' onload="logImageIssue(\'loaded\', this.alt, this.currentSrc || this.src)"' +
+        ' onerror="logImageIssue(\'error\', this.alt, this.currentSrc || this.src);this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
+        '<div style="display:none;width:100%;height:160px;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px;padding:8px;background:#eee;">' +
+          barve.map(c => '<div style="width:24px;height:24px;border-radius:5px;background:' + c + '"></div>').join('') +
+        '</div>' +
+      '</div>' +
+      '<div class="artwork-info">' +
+        '<div class="artwork-title">' + art.title + '</div>' +
+        '<div class="artwork-artist">' + ([
+          art.artist || '',
+          art.year || ''
+        ].filter(Boolean).join(', ')) + '</div>' +
+        '<div class="color-bar">' +
+          barve.map(c => '<div class="color-bar-seg" style="background:' + c + '"></div>').join('') +
+        '</div>' +
+      '</div>' +
+    '</div>';
   }).join('');
 }
 
@@ -393,20 +968,27 @@ document.getElementById('timelineBar').addEventListener('click', function(e) {
 });
 
 let dragging = false;
+
 document.getElementById('handle').addEventListener('mousedown', e => {
   dragging = true;
   document.getElementById('handle').style.transition = 'none';
   e.stopPropagation();
 });
+
 document.addEventListener('mousemove', e => {
   if (!dragging) return;
+
   const bar = document.getElementById('timelineBar');
   const rect = bar.getBoundingClientRect();
   const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
   const idx = Math.round(pct * (ERAS.length - 1));
+
   if (idx !== activeIdx) setEra(idx);
 });
-document.addEventListener('mouseup', () => { dragging = false; });
+
+document.addEventListener('mouseup', () => {
+  dragging = false;
+});
 
 render();
 nalozi_podatke();
