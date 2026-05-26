@@ -244,6 +244,8 @@ body {
   font-size: 12px;
   color: #666;
   line-height: 1.7;
+  max-height: 120px;
+  overflow: hidden;
 }
 
 .detail-block {
@@ -399,6 +401,131 @@ body {
   min-width: 100%;
 }
 
+
+.expand-toggle {
+  margin-top: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border: 0.5px solid rgba(0,0,0,0.12);
+  border-radius: 8px;
+  background: #faf8f3;
+  cursor: pointer;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #444;
+}
+
+.expand-toggle:hover {
+  background: #f0ece4;
+}
+
+.hidden-section {
+  display: none;
+}
+
+.hidden-section.show {
+  display: block;
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.info-button {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.15);
+  background: #fff;
+  color: #1a1a1a;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.info-button:hover {
+  background: #f2f2f2;
+  transform: scale(1.05);
+}
+
+.info-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 1000;
+}
+
+.info-modal.show {
+  display: flex;
+}
+
+.info-modal-content {
+  background: #fff;
+  width: min(760px, 100%);
+  max-height: 85vh;
+  overflow-y: auto;
+  border-radius: 16px;
+  padding: 28px;
+  position: relative;
+  box-shadow: 0 10px 35px rgba(0,0,0,0.18);
+}
+
+.info-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  border: none;
+  background: transparent;
+  font-size: 26px;
+  cursor: pointer;
+  color: #666;
+}
+
+.info-modal-close:hover {
+  color: #1a1a1a;
+}
+
+.info-modal-title {
+  font-size: 20px;
+  margin-bottom: 18px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.info-section {
+  margin-bottom: 20px;
+}
+
+.info-section h3 {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+  color: #444;
+}
+
+.info-section p,
+.info-section li {
+  font-size: 13px;
+  line-height: 1.7;
+  color: #555;
+}
+
+.info-section ul {
+  padding-left: 18px;
+}
+
 @media (max-width: 980px) {
   .grid2 {
     grid-template-columns: 1fr;
@@ -444,7 +571,61 @@ body {
 
 <div class="header">
   <div class="breadcrumb" id="breadcrumb">Domov › Raziskuj › Impresionizem</div>
-  <div class="page-title">Projekt: Spremembe barvnih palet skozi čas</div>
+  <div class="header-top">
+    <div class="page-title">Projekt: Spremembe barvnih palet skozi čas</div>
+    <button class="info-button" id="infoButton" aria-label="Informacije o projektu">
+      i
+    </button>
+  </div>
+</div>
+
+<div class="info-modal" id="infoModal">
+  <div class="info-modal-content">
+    <button class="info-modal-close" id="closeInfoModal" aria-label="Zapri okno">
+      &times;
+    </button>
+
+    <div class="info-modal-title">Informacije o projektu</div>
+
+    <div class="info-section">
+      <h3>Kako deluje algoritem</h3>
+
+      <p>
+        Algoritem v datoteki <code>extract_colors.py</code> analizira umetniške slike iz lokalne mape
+        <code>images</code> in iz njih izlušči dominantne barve posameznega umetnostnega obdobja.
+        Slike najprej pretvori v RGB podatke, nato pa piksle razvrsti v HSV barvni prostor,
+        kjer poišče najbolj izrazite in med seboj dovolj različne barvne skupine.
+      </p>
+
+      <p>
+        Izbrane barve so dejansko prisotne v originalnih slikah in niso umetno ustvarjene.
+        Algoritem nato ustvari barvne palete, poimenuje odtenke ter vse podatke shrani
+        v datoteko <code>art_periods_data.json</code>, ki jo uporablja ta spletna stran.
+      </p>
+    </div>
+
+    <div class="info-section">
+      <h3>Kaj prikazuje stran</h3>
+
+      <ul>
+        <li>časovnico umetnostnih obdobij skozi zgodovino,</li>
+        <li>dominantne barvne palete posameznega obdobja,</li>
+        <li>opis obdobja in zgodovinski kontekst,</li>
+        <li>ključne umetnike in poudarke obdobja,</li>
+        <li>primere umetniških del z analiziranimi barvami.</li>
+      </ul>
+    </div>
+
+    <div class="info-section">
+      <h3>Kako uporabljati stran</h3>
+
+      <ul>
+        <li>Klikni na obdobje v časovnici za prikaz njegovih podatkov.</li>
+        <li>Premikaj se po časovni osi in primerjaj spremembe barvnih palet.</li>
+        <li>Preglej posamezna umetniška dela in njihove dominantne barve.</li>
+      </ul>
+    </div>
+  </div>
 </div>
 
 <div class="main">
@@ -482,21 +663,32 @@ body {
       <div class="era-panel details-card">
         <div class="detail-desc" id="detailDesc"></div>
 
-        <div class="detail-block" id="detailArtistsBlock">
-          <div class="detail-subtitle">Predstavniki</div>
-          <ul class="detail-list" id="detailArtists"></ul>
+        <div class="hidden-section" id="detailsExpanded">
+          <div class="detail-block" id="detailArtistsBlock">
+            <div class="detail-subtitle">Predstavniki</div>
+            <ul class="detail-list" id="detailArtists"></ul>
+          </div>
+
+          <div class="detail-block" id="detailNotesBlock">
+            <div class="detail-subtitle">Zgodovinski poudarki</div>
+            <ul class="detail-notes" id="detailNotes"></ul>
+          </div>
         </div>
 
-        <div class="detail-block" id="detailNotesBlock">
-          <div class="detail-subtitle">Zgodovinski poudarki</div>
-          <ul class="detail-notes" id="detailNotes"></ul>
-        </div>
+        <button class="expand-toggle" id="detailsToggle">
+          Prikaži več
+        </button>
       </div>
     </div>
 
     <div>
       <div class="section-label">Primeri del in uporaba</div>
+
       <div class="artworks-grid" id="artworksGrid"></div>
+
+      <button class="expand-toggle" id="artworksToggle">
+        Prikaži več
+      </button>
     </div>
   </div>
 </div>
@@ -956,8 +1148,18 @@ function render() {
 
 function setEra(idx) {
   activeIdx = idx;
-  document.getElementById('handle').style.transition = 'left 0.22s cubic-bezier(.4,0,.2,1)';
+
+  document.getElementById('handle').style.transition =
+    'left 0.22s cubic-bezier(.4,0,.2,1)';
+
+  // resetiraj stanje ob menjavi obdobja
+  artworksExpanded = false;
+  detailsExpanded = false;
+
   render();
+
+  // ponovno uporabi logiko za prikaz/skritje
+  updateExpandableSections();
 }
 
 document.getElementById('timelineBar').addEventListener('click', function(e) {
@@ -991,6 +1193,83 @@ document.addEventListener('mouseup', () => {
 
 render();
 nalozi_podatke();
+
+let artworksExpanded = false;
+let detailsExpanded = false;
+
+function updateExpandableSections() {
+  const cards = document.querySelectorAll('#artworksGrid .artwork-card');
+  const artworksToggle = document.getElementById('artworksToggle');
+
+  cards.forEach((card, idx) => {
+    if (!artworksExpanded && idx >= 6) {
+      card.style.display = 'none';
+    } else {
+      card.style.display = 'flex';
+    }
+  });
+
+  if (artworksToggle) {
+    artworksToggle.textContent = artworksExpanded ? 'Prikaži manj' : 'Prikaži več';
+  }
+
+  const detailsExpandedEl = document.getElementById('detailsExpanded');
+  const detailsToggle = document.getElementById('detailsToggle');
+
+  if (detailsExpandedEl) {
+    detailsExpandedEl.classList.toggle('show', detailsExpanded);
+  }
+
+  if (detailsToggle) {
+    detailsToggle.textContent = detailsExpanded ? 'Prikaži manj' : 'Prikaži več';
+  }
+
+  const detailDesc = document.getElementById('detailDesc');
+
+  if (detailDesc) {
+    detailDesc.style.maxHeight = detailsExpanded ? 'none' : '120px';
+  }
+
+}
+
+document.addEventListener('click', (e) => {
+  if (e.target && e.target.id === 'artworksToggle') {
+    artworksExpanded = !artworksExpanded;
+    updateExpandableSections();
+  }
+
+  if (e.target && e.target.id === 'detailsToggle') {
+    detailsExpanded = !detailsExpanded;
+    updateExpandableSections();
+  }
+});
+
+setTimeout(updateExpandableSections, 100);
+
+const infoButton = document.getElementById('infoButton');
+const infoModal = document.getElementById('infoModal');
+const closeInfoModal = document.getElementById('closeInfoModal');
+
+infoButton.addEventListener('click', () => {
+  infoModal.classList.add('show');
+});
+
+closeInfoModal.addEventListener('click', () => {
+  infoModal.classList.remove('show');
+});
+
+infoModal.addEventListener('click', (e) => {
+  if (e.target === infoModal) {
+    infoModal.classList.remove('show');
+  }
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    infoModal.classList.remove('show');
+  }
+});
+
 </script>
 </body>
 </html>
